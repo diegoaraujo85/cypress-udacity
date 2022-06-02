@@ -1,0 +1,8 @@
+{
+  "nome":"Diego",
+  "sobrenome":"Araujo",
+  "sexo":"M",
+  "comida":"pizza",
+  "escolaridade":"Superior",
+  "esportes": ["Karate", "futebol"]
+}
