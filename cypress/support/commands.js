@@ -52,7 +52,7 @@ Cypress.Commands.add('resetApp', () => {
 Cypress.Commands.add('getToken', (email, senha, redirecionar=false) => {
   cy.request({
     method: 'POST',
-    url: 'https://barrigarest.wcaquino.me/signin',
+    url: '/signin',
     body: {
       email,
       senha,
@@ -69,7 +69,7 @@ Cypress.Commands.add('getToken', (email, senha, redirecionar=false) => {
 Cypress.Commands.add('resetRest', () => {
   cy.request({
     method: 'GET',
-    url: 'https://barrigarest.wcaquino.me/reset',
+    url: '/reset',
     headers: {
       Authorization: `JWT ${Cypress.env('token')}`,
     },
@@ -78,3 +78,49 @@ Cypress.Commands.add('resetRest', () => {
     expect(response.status).to.eq(200)
   })
 })
+
+Cypress.Commands.add('getContaIdByName', (nomeConta) => {
+  cy.request({
+    method: 'GET',
+    url: `/contas`,
+    headers:{ Authorization: `JWT ${Cypress.env('token')}` },
+    qs: {
+      nome: nomeConta,
+    }
+  })
+  .its('body.0.id').should('not.be.empty')
+  .then((id) =>  id)
+})
+
+Cypress.Commands.add('getTransacaoByName', (descricaoTransacao) => {
+  cy.request({
+    method: 'GET',
+    url: `/transacoes`,
+    headers:{ Authorization: `JWT ${Cypress.env('token')}` },
+    qs: {
+      descricao: descricaoTransacao,
+    }
+  })
+  .then((response) =>  response.body[0])
+})
+
+Cypress.Commands.add('getSaldoContaByName', (contaNome) => {
+    let saldoConta = 0
+    cy.request({
+      method: 'GET',
+      url: '/saldo',
+      headers: {
+        Authorization: `JWT ${Cypress.env('token')}`
+      },
+    }).then((response) => {
+      const contas = response.body
+      contas.forEach((c) => {
+        if(c.conta === contaNome){
+          saldoConta= c.saldo
+        }
+      })
+      return saldoConta
+    })
+})
+
+
