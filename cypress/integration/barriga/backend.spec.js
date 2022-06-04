@@ -16,9 +16,6 @@ describe('Testando a nivel de api', () => {
       body: {
         nome: 'conta via rest',
       },
-      headers:{
-        Authorization: `JWT ${Cypress.env('token')}`
-      },
     })
     .as('response')
     // apenas uma forma diferente de fazer o then
@@ -39,9 +36,6 @@ describe('Testando a nivel de api', () => {
         body: {
           nome: 'conta alterada via rest',
         },
-        headers:{
-          Authorization: `JWT ${Cypress.env('token')}`
-        },
       })
       .as('response')
 
@@ -56,9 +50,6 @@ describe('Testando a nivel de api', () => {
       url: '/contas',
       body: {
         nome: 'Conta mesmo nome',
-      },
-      headers:{
-        Authorization: `JWT ${Cypress.env('token')}`
       },
       failOnStatusCode: false,
     })
@@ -88,9 +79,6 @@ describe('Testando a nivel de api', () => {
           "conta_id": contaId,
           "status": true
         },
-        headers:{
-          Authorization: `JWT ${Cypress.env('token')}`
-        },
       }).as('transacao')
       cy.get('@transacao').its('status').should('eq', 201)
       cy.get('@transacao').its('body.id').should('exist')
@@ -105,9 +93,6 @@ describe('Testando a nivel de api', () => {
       cy.request({
         method: 'DELETE',
         url: `/transacoes/${transacao.id}`,
-        headers:{
-          Authorization: `JWT ${Cypress.env('token')}`
-        },
       })
       .its('status').should('eq', 204)
     })
@@ -122,9 +107,6 @@ describe('Testando a nivel de api', () => {
     cy.request({
       method: 'GET',
       url: '/saldo',
-      headers: {
-        Authorization: `JWT ${Cypress.env('token')}`
-      },
     }).then((response) => {
       const contas = response.body
       let saldoConta = null
@@ -153,20 +135,14 @@ describe('Testando a nivel de api', () => {
           "conta_id": transacao.conta_id,
           "status": true
         },
-        headers:{
-          Authorization: `JWT ${Cypress.env('token')}`
-        },
       }).as('transacao')
       cy.get('@transacao').its('status').should('eq', 200)
-      // cy.get('@transacao').its('body.id').should('exist')
     })
 
     cy.request({
       method: 'GET',
       url: '/saldo',
-      headers: {
-        Authorization: `JWT ${Cypress.env('token')}`
-      },
+      failOnStatusCode: false,
     }).then((response) => {
       const contas = response.body
       let saldoConta = null

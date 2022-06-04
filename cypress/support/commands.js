@@ -65,7 +65,6 @@ Cypress.Commands.add('getToken', (email, senha, redirecionar=false) => {
   })
 })
 
-
 Cypress.Commands.add('resetRest', () => {
   cy.request({
     method: 'GET',
@@ -123,4 +122,11 @@ Cypress.Commands.add('getSaldoContaByName', (contaNome) => {
     })
 })
 
-
+Cypress.Commands.overwrite('request', (originalFn, ...options) => {
+  if (options.length === 1) {
+    options[0].headers = {
+        Authorization : `JWT ${Cypress.env('token')}`
+    }
+  }
+  return originalFn(...options)
+})
