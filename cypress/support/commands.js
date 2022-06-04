@@ -61,7 +61,20 @@ Cypress.Commands.add('getToken', (email, senha, redirecionar=false) => {
   })
   .its('body.token').should('not.be.empty')
   .then(token => {
-    // Cypress.env('token', token)
-    return token
+    Cypress.env('token', token)
+  })
+})
+
+
+Cypress.Commands.add('resetRest', () => {
+  cy.request({
+    method: 'GET',
+    url: 'https://barrigarest.wcaquino.me/reset',
+    headers: {
+      Authorization: `JWT ${Cypress.env('token')}`,
+    },
+  })
+  .then((response) => {
+    expect(response.status).to.eq(200)
   })
 })

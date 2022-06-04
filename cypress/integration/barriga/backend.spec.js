@@ -4,21 +4,9 @@ describe('Testando a nivel de api', () => {
 
   before(()=>{
     cy.getToken(Cypress.env('email'), Cypress.env('password'))
-    .then(token => {
-      Cypress.env('token', token)
-    })
   })
   beforeEach(() => {
-    // cy.request({
-    //   method: 'GET',
-    //   url: 'https://barrigarest.wcaquino.me/reset',
-    //   headers: {
-    //     Authorization: `JWT ${Cypress.env('token')}`,
-    //   },
-    // })
-    // .then((response) => {
-    //   expect(response.status).to.eq(200)
-    // })
+    cy.resetRest()
   });
 
   it('deve criar uma conta', () => {
