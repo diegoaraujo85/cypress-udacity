@@ -3,31 +3,22 @@
 describe('Testando a nivel de api', () => {
 
   before(()=>{
-    cy.request({
-      method: 'POST',
-      url: 'https://barrigarest.wcaquino.me/signin',
-      body: {
-        email: Cypress.env('email'),
-        senha: Cypress.env('password'),
-        redirecionar: false,
-      },
-    })
-    .its('body.token').should('not.be.empty')
+    cy.getToken(Cypress.env('email'), Cypress.env('password'))
     .then(token => {
       Cypress.env('token', token)
     })
   })
   beforeEach(() => {
-    cy.request({
-      method: 'GET',
-      url: 'https://barrigarest.wcaquino.me/reset',
-      headers: {
-        Authorization: `JWT ${Cypress.env('token')}`,
-      },
-    })
-    .then((response) => {
-      expect(response.status).to.eq(200)
-    })
+    // cy.request({
+    //   method: 'GET',
+    //   url: 'https://barrigarest.wcaquino.me/reset',
+    //   headers: {
+    //     Authorization: `JWT ${Cypress.env('token')}`,
+    //   },
+    // })
+    // .then((response) => {
+    //   expect(response.status).to.eq(200)
+    // })
   });
 
   it('deve criar uma conta', () => {
