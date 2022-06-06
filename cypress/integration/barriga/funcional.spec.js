@@ -78,7 +78,7 @@ describe('Testando a nivel funcional', () => {
     cy.xpath(locators.SALDO.FN_XP_SALDO_CONTA('Conta para saldo')).should('contain', '534,00')
   });
 
-  it.only('deve alterar uma movimentação e verificar o saldo', () => {
+  it('deve alterar uma movimentação e verificar o saldo', () => {
     cy.get(locators.MENU.EXTRATO).click()
     cy.xpath(locators.EXTRATO.FN_XP_BUSCA_ELEMENTO_PARA_EDITAR('Movimentacao 1, calculo saldo', '3.500'))
       .should('exist')
