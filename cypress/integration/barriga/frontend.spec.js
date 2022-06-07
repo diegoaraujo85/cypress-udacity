@@ -276,4 +276,102 @@ describe('Testando a nivel funcional', () => {
     cy.getToastMessage('Conta inserida com sucesso')
   })
 
+  it('deve testar as cores', () => {
+    cy.route({
+      method: 'GET',
+      url: '/extrato/**',
+      response: [
+        {
+          "conta": "Conta para movimentacoes",
+          "id": 1144127,
+          "descricao": "Receita paga",
+          "envolvido": "AAA",
+          "observacao": null,
+          "tipo": "REC",
+          "data_transacao": "2022-06-07T03:00:00.000Z",
+          "data_pagamento": "2022-06-07T03:00:00.000Z",
+          "valor": "1500.00",
+          "status": true,
+          "conta_id": 1227337,
+          "usuario_id": 30622,
+          "transferencia_id": null,
+          "parcelamento_id": null
+        },
+        {
+          "conta": "Conta com movimentacao",
+          "id": 1144128,
+          "descricao": "Receita pendente",
+          "envolvido": "BBB",
+          "observacao": null,
+          "tipo": "REC",
+          "data_transacao": "2022-06-07T03:00:00.000Z",
+          "data_pagamento": "2022-06-07T03:00:00.000Z",
+          "valor": "1500.00",
+          "status": false,
+          "conta_id": 1227338,
+          "usuario_id": 30622,
+          "transferencia_id": null,
+          "parcelamento_id": null
+        },
+        {
+          "conta": "Conta para saldo",
+          "id": 1144129,
+          "descricao": "Despesa paga",
+          "envolvido": "CCC",
+          "observacao": null,
+          "tipo": "DESP",
+          "data_transacao": "2022-06-07T03:00:00.000Z",
+          "data_pagamento": "2022-06-07T03:00:00.000Z",
+          "valor": "-3500.00",
+          "status": true,
+          "conta_id": 1227339,
+          "usuario_id": 30622,
+          "transferencia_id": null,
+          "parcelamento_id": null
+        },
+        {
+          "conta": "Conta para saldo",
+          "id": 1144130,
+          "descricao": "Despesa pendente",
+          "envolvido": "DDD",
+          "observacao": null,
+          "tipo": "DESP",
+          "data_transacao": "2022-06-07T03:00:00.000Z",
+          "data_pagamento": "2022-06-07T03:00:00.000Z",
+          "valor": "-1000.00",
+          "status": false,
+          "conta_id": 1227339,
+          "usuario_id": 30622,
+          "transferencia_id": null,
+          "parcelamento_id": null
+        }
+
+      ],
+    }).as('extrato')
+
+    cy.get(locators.MENU.EXTRATO).click()
+    cy.xpath(locators.EXTRATO.FN_XP_BUSCA_LINHA('Despesa paga')).should('have.class', 'despesaPaga')
+    cy.xpath(locators.EXTRATO.FN_XP_BUSCA_LINHA('Despesa pendente')).should('have.class', 'despesaPendente')
+    cy.xpath(locators.EXTRATO.FN_XP_BUSCA_LINHA('Receita paga')).should('have.class', 'receitaPaga')
+    cy.xpath(locators.EXTRATO.FN_XP_BUSCA_LINHA('Receita pendente')).should('have.class', 'receitaPendente')
+
+  })
+
+  it('deve testar a responsividade da tela', () => {
+    cy.viewport(1280, 768)
+    cy.get(locators.MENU.HOME).should('exist').and('be.visible')
+    cy.get(locators.MENU.SANDWICH).should('exist').and('not.be.visible')
+
+    cy.viewport(560, 720)
+    cy.get(locators.MENU.HOME).should('exist').and('not.be.visible')
+    cy.get(locators.MENU.SANDWICH).should('exist').and('be.visible')
+
+    cy.viewport('ipad-2')
+    cy.get(locators.MENU.HOME).should('exist').and('be.visible')
+    cy.get(locators.MENU.SANDWICH).should('exist').and('not.be.visible')
+
+    cy.viewport('iphone-5')
+    cy.get(locators.MENU.HOME).should('exist').and('not.be.visible')
+    cy.get(locators.MENU.SANDWICH).should('exist').and('be.visible')
+  })
 })

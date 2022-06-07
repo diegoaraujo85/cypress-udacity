@@ -141,6 +141,7 @@ const buildEnv = () => {
       }
     ],
   }).as('extrato')
+
 }
 
 export default buildEnv
