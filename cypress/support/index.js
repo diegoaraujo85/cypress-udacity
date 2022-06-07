@@ -23,6 +23,6 @@ require("cypress-xpath");
 
 // mudando a ordem de prioridade do seletor do cypress, tela de previews
 Cypress.SelectorPlayground.defaults({
-  selectorPriority: ['data-wc','data-cy', 'data-test', 'data-testid','id', 'class', 'attributes',  'tag', 'nth-child'],
+  selectorPriority: ['data-wc', 'data-cy', 'data-test', 'data-testid', 'id', 'class', 'attributes', 'tag', 'nth-child'],
   // data-wc -> seletor customizado
 })

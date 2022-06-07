@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "cypress": "./node_modules/.bin/cypress",
     "cyr": "cypress run",
     "cyo": "cypress open"
   },
