@@ -239,5 +239,41 @@ describe('Testando a nivel funcional', () => {
     cy.xpath(locators.SALDO.FN_XP_SALDO_CONTA('Carteira')).should('contain', '4.034,00')
   });
 
+  it('deve validar os dados enviados para criar uma conta', () => {
+    const reqStub = cy.stub() // terceira forma de validar
+    cy.route({
+      method: 'POST',
+      url: '/contas',
+      response: { "id": 3, "nome": "conta de teste", "visivel": true, "usuario_id": 1 },
+      // onRequest: xhr => {
+      //   // console.log(xhr)
+      //   expect(xhr.request.body.nome).not.empty
+      //   expect(req.request.headers).to.have.property('Authorization')
+      // }, // segunda forma de validar
+      onRequest: reqStub, // terceira forma de validar
+    }).as('post_contas')
+
+    cy.acessarMenuConta()
+
+    cy.route({
+      method: 'GET',
+      url: '/contas',
+      response: [
+        { "id": 1, "nome": "Carteira", "visivel": true, "usuario_id": 1 },
+        { "id": 2, "nome": "banco", "visivel": true, "usuario_id": 1 },
+        { "id": 3, "nome": "conta de teste", "visivel": true, "usuario_id": 1 }
+      ],
+    }).as('contas_novo')
+
+    cy.inserirConta('{control}')
+    // cy.get('@post_contas').its('request.body.nome').should('not.be.empty') // primeira forma de validar
+    cy.wait('@post_contas').then(() => { // terceira forma de validar
+      console.log(reqStub.args[0][0])
+      expect(reqStub.args[0][0].request.body.nome).to.be.empty
+      expect(reqStub.args[0][0].request.headers).to.have.property('Authorization')
+    })
+
+    cy.getToastMessage('Conta inserida com sucesso')
+  })
 
 })
